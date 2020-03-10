@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.choonsik.security_sample.R
 import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
+import kotlinx.android.synthetic.main.view_pin_key.view.*
 
 class PinKeyView
 @JvmOverloads constructor(
@@ -27,9 +28,13 @@ class PinKeyView
 
     fun setKey(key: PinKey) {
         this.key = key
+
+        if(key is PinKey.Num){
+            tv_pin_text.text = PinKey.getString(key)
+        }
     }
 
-    fun setKeyboardClickListener(keyboardClickListener: KeyboardClickListener) {
+    fun setKeyboardClickListener(keyboardClickListener: KeyboardClickListener?) {
         this.keyboardClickListener = keyboardClickListener
     }
 

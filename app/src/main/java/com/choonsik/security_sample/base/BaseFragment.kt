@@ -37,7 +37,7 @@ abstract class BaseFragment<VM : ViewModel, B : ViewDataBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
-            setVariable(BR.vm, viewModel)
+//            setVariable(BR.vm, viewModel)
             lifecycleOwner = viewLifecycleOwner
         }
     }

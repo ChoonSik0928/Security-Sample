@@ -2,20 +2,66 @@ package com.choonsik.security_sample.widget.pin
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.view.ViewGroup
+import android.widget.TableLayout
+import android.widget.TableRow
+import com.choonsik.security_sample.R
+import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
+import com.choonsik.security_sample.widget.pin.keyboard.Keyboard
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
 import com.choonsik.security_sample.widget.pin.keyboard.Row
+import com.choonsik.security_sample.widget.pin.util.ArrayUtil.create2DIntArray
+import com.choonsik.security_sample.widget.pin.util.ArrayUtil.find2DArrayIndex
+import com.choonsik.security_sample.widget.pin.util.ArrayUtil.makeNumberArray0To9WithShuffle
 
 class PinKeyboardView
 @JvmOverloads
 constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+    attrs: AttributeSet? = null
+) : TableLayout(context, attrs) {
+
+    private var keyboardClickListener: KeyboardClickListener? = null
 
     init {
         var isShuffle = false
+
+        attrs?.run {
+            val typedArray = context.obtainStyledAttributes(
+                this,
+                R.styleable.PinAttributes, 0, 0
+            )
+
+            isShuffle = typedArray.getBoolean(R.styleable.PinAttributes_isShuffle, false)
+
+            typedArray.recycle()
+        }
+
+        val keyboard = createNumericKeyboard(isShuffle)
+        setKeyboardView(context, keyboard)
+    }
+
+    fun setKeyboardClickListener(keyboardClickListener: KeyboardClickListener) {
+        this.keyboardClickListener = keyboardClickListener
+    }
+
+    private fun setKeyboardView(context: Context, keyboard: Keyboard) {
+        keyboard.rows.forEach { row ->
+            val tableRow = TableRow(context)
+            val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            params.weight = 1F
+            tableRow.layoutParams = params
+
+            row.keys.forEach { pinKey ->
+                var pinKeyView = PinKeyView(context)
+                pinKeyView.setKey(pinKey)
+                pinKeyView.setKeyboardClickListener(keyboardClickListener)
+
+                tableRow.addView(pinKeyView)
+            }
+
+            this.addView(tableRow)
+        }
     }
 
     /**
@@ -26,41 +72,41 @@ constructor(
      * [ ][0][<]
      * ----------
      */
-    fun createNumericKeyboard(isShuffle: Boolean) {
+    private fun createNumericKeyboard(isShuffle: Boolean): Keyboard {
+        val numberArray = makeNumberArray0To9WithShuffle(isShuffle)
 
         val rows = arrayListOf<Row>()
 
-        val matrix = createMatrix(3, 4)
-        matrix.withIndex().forEach { (rows, columns) ->
+        val intArray = create2DIntArray(4, 3)
+
+        intArray.withIndex().forEach { (rowIndex, columnIndex) ->
+            val row = Row()
             var key: PinKey = PinKey.EmptyKey
             val keys = arrayListOf<PinKey>()
 
-            columns.withIndex().forEach {
-                val index = index(rows, columns.size, it.index)
-                if (rows == matrix.lastIndex) {
+            columnIndex.withIndex().forEach {
+                val index = find2DArrayIndex(rowIndex, columnIndex.size, it.index)
+                if (rowIndex == intArray.lastIndex) {
+                    // [][number][<] 마지막 row
                     when (it.index) {
                         1 -> {
-
+                            key = PinKey.Num(numberArray.last()) //0
                         }
                         2 -> {
-
-                        }
-                        else -> {
-
+                            key = PinKey.BackKey
                         }
                     }
+                    keys.add(key)
                 } else {
-
+                    keys.add(PinKey.Num(numberArray[index]))
                 }
+                row.keys = keys
             }
-
+            rows.add(row)
         }
+
+        return Keyboard(rows)
     }
 
-    private fun createMatrix(rows: Int, columns: Int): Array<IntArray> {
-        return Array(rows) { IntArray(columns) }
-    }
 
-    private fun index(rowIndex: Int, columnSize: Int, columnIndex: Int) =
-        (rowIndex * columnSize) + columnIndex
 }
