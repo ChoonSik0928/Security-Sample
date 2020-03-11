@@ -2,9 +2,11 @@ package com.choonsik.security_sample.widget.pin
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TableRow
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.choonsik.security_sample.R
 import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
@@ -24,13 +26,20 @@ class PinKeyView
     init {
         LayoutInflater.from(context).inflate(R.layout.view_pin_key, this, true)
         layoutParams = rowLayoutParams()
+        setOnClickListener(this)
     }
 
-    fun setKey(key: PinKey) {
+    fun setKey(key: PinKey, @DrawableRes drawableRes: Int = 0) {
         this.key = key
 
-        if(key is PinKey.Num){
-            tv_pin_text.text = PinKey.getString(key)
+        if (key !is PinKey.EmptyKey) {
+            if (drawableRes == 0) {
+                iv_pin.visibility = View.GONE
+                tv_pin.text = PinKey.getString(key)
+            } else {
+                tv_pin.visibility = View.VISIBLE
+                iv_pin.setImageResource(drawableRes)
+            }
         }
     }
 

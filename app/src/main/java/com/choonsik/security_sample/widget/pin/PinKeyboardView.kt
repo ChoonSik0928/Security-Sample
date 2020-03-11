@@ -2,9 +2,11 @@ package com.choonsik.security_sample.widget.pin
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.core.view.children
 import com.choonsik.security_sample.R
 import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
 import com.choonsik.security_sample.widget.pin.keyboard.Keyboard
@@ -20,8 +22,6 @@ constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : TableLayout(context, attrs) {
-
-    private var keyboardClickListener: KeyboardClickListener? = null
 
     init {
         var isShuffle = false
@@ -39,23 +39,48 @@ constructor(
 
         val keyboard = createNumericKeyboard(isShuffle)
         setKeyboardView(context, keyboard)
+        //넓이 비율 맞추기 위함 row
     }
 
     fun setKeyboardClickListener(keyboardClickListener: KeyboardClickListener) {
-        this.keyboardClickListener = keyboardClickListener
+        setPinKeyViewClickListener(keyboardClickListener)
+    }
+
+    private fun setPinKeyViewClickListener(keyboardClickListener: KeyboardClickListener) {
+        this.children.iterator().forEach {
+            if (it is ViewGroup) {
+                it.children.iterator().forEach {
+                    if (it is PinKeyView) {
+                        it.setKeyboardClickListener(keyboardClickListener)
+                    }
+                }
+            }
+        }
     }
 
     private fun setKeyboardView(context: Context, keyboard: Keyboard) {
         keyboard.rows.forEach { row ->
             val tableRow = TableRow(context)
-            val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
             params.weight = 1F
             tableRow.layoutParams = params
 
             row.keys.forEach { pinKey ->
                 var pinKeyView = PinKeyView(context)
-                pinKeyView.setKey(pinKey)
-                pinKeyView.setKeyboardClickListener(keyboardClickListener)
+                when(pinKey){
+                    is PinKey.BackKey->{
+                        pinKeyView.setKey(pinKey,R.drawable.backspace)
+                        pinKeyView.isClickable = true
+                    }
+                    is PinKey.Num->{
+                        pinKeyView.setKey(pinKey)
+                        pinKeyView.isClickable = true
+                    }
+
+                    is PinKey.EmptyKey->{
+                        pinKeyView.isClickable = false
+                    }
+                }
 
                 tableRow.addView(pinKeyView)
             }

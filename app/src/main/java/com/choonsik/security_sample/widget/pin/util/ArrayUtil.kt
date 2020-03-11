@@ -7,11 +7,11 @@ object ArrayUtil {
             numberValues.add(i)
         }
 
+        numberValues.add(0)
+
         if (isShuffle) {
             numberValues.shuffle()
         }
-
-        numberValues.add(0)
 
         return numberValues
     }
