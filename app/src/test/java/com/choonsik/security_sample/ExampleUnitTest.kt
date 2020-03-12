@@ -1,5 +1,7 @@
 package com.choonsik.security_sample
 
+import android.util.Log
+import com.choonsik.security_sample.widget.pin.PinKeyboardView
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
 import com.choonsik.security_sample.widget.pin.keyboard.Row
 import com.choonsik.security_sample.widget.pin.util.ArrayUtil
@@ -75,4 +77,43 @@ class ExampleUnitTest {
         }
 
     }
+
+    @Test
+    fun alphabetKeyboard() {
+        val alphabetArray = ArrayUtil.makeAlphabetArrayAToZWithShuffle(false)
+        val rows = arrayListOf<Row>()
+        val intArray = ArrayUtil.create2DIntArray(4, 7)
+
+        intArray.withIndex().forEach { (rowIndex, columnIndex) ->
+            val row = Row()
+            var key: PinKey = PinKey.EmptyKey
+            val keys = arrayListOf<PinKey>()
+
+            columnIndex.withIndex().forEach {
+                val index = ArrayUtil.find2DArrayIndex(rowIndex, columnIndex.size, it.index)
+                when {
+                    index <= alphabetArray.lastIndex -> {
+                        key = PinKey.Alphabet(alphabetArray[index])
+                        keys.add(key)
+                    }
+                    index == alphabetArray.lastIndex + 1 -> {
+                        key = PinKey.BackKey
+                        keys.add(key)
+                    }
+                }
+
+                row.keys = keys
+            }
+            rows.add(row)
+        }
+
+        rows.forEach {
+            it.keys.forEach { pinKey ->
+                print("[${PinKey.getString(pinKey)}] ")
+            }
+            println()
+        }
+
+    }
+
 }

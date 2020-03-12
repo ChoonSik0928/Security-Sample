@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
+                    is PinKey.Alphabet,
                     is PinKey.Num -> {
                         result.add(PinKey.getString(key))
                     }

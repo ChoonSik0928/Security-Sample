@@ -2,5 +2,10 @@
 <resources>
     <declare-styleable name="PinAttributes">
         <attr name="isShuffle" format="boolean" />
+
+        <attr name="pinType" format="enum">
+            <enum name="numeric" value="0"/>
+            <enum name="alphabet" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>
