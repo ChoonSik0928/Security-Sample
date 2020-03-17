@@ -1,4 +1,4 @@
-package com.choonsik.security_sample.ui
+package com.choonsik.security_sample.z_examples
 
 import android.os.Build
 import android.os.Bundle
