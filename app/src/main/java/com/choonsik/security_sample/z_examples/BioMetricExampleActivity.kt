@@ -21,7 +21,7 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 
-class BioMetricSampleActivity : AppCompatActivity() {
+class BioMetricExampleActivity : AppCompatActivity() {
     private val TAG = this.javaClass.simpleName
     private var executor = Executor { }
 

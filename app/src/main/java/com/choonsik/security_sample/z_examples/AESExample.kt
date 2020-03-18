@@ -5,7 +5,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-object AESHelper {
+object AESExample {
 
     private const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS5PADDING"
     private const val SECRET_KEY = "ANYTHING_16Bytes"

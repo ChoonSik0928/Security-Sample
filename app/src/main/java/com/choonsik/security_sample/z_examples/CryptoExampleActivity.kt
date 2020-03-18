@@ -9,8 +9,8 @@ class CryptoExampleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val encryptedValue = AESHelper.encrypt(PASSWORD, IV)
-        val decryptedValue = AESHelper.decrypt(encryptedValue, IV)
+        val encryptedValue = AESExample.encrypt(PASSWORD, IV)
+        val decryptedValue = AESExample.decrypt(encryptedValue, IV)
 
         Log.e("test","plainText = $PASSWORD / encryptedValue = $encryptedValue / decryptedValue = $decryptedValue")
     }
