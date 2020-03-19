@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".z_examples.CryptoExampleActivity">
+        <activity android:name=".z_examples.BioMetricExample2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

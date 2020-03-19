@@ -2,13 +2,26 @@ package com.choonsik.security_sample.z_examples
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
+import java.security.Key
 import java.security.KeyStore
+import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 
-class KeystoreExample {
+object KeystoreExample {
+
+    const val KEY_STORE_PROVIDER = "AndroidKeyStore" //fixed
+    private const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS7Padding"
+
     val ks: KeyStore = KeyStore.getInstance(KEY_STORE_PROVIDER).apply {
         load(null)
+    }
+
+    //keyAlias = keyName
+    fun getKey(keyAlias: String): Key {
+      return ks.getKey(keyAlias, null)
     }
 
     /** 사용 가능한 알고리즘
@@ -34,7 +47,7 @@ class KeystoreExample {
      * ENCRYPTION_PADDING_RSA_PKCS1,
      * ENCRYPTION_PADDING_RSA_OAEP
      */
-    fun createKey(keyStoreAlias: String) : SecretKey{
+    fun createKey(keyStoreAlias: String): SecretKey {
         val keyGenerator =
             KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEY_STORE_PROVIDER)
         val keyGenParameterSpec =
@@ -56,7 +69,14 @@ class KeystoreExample {
         return keyGenerator.generateKey()
     }
 
-    companion object {
-        const val KEY_STORE_PROVIDER = "AndroidKeyStore" //fixed
-    }
+    fun getEncryptCipher(key: Key): Cipher =
+        Cipher.getInstance(CIPHER_TRANSFORMATION).apply {
+            init(Cipher.ENCRYPT_MODE, key)
+        }
+
+    fun getDecryptCipher(key: Key, iv:ByteArray): Cipher =
+        Cipher.getInstance(CIPHER_TRANSFORMATION).apply {
+            init(Cipher.DECRYPT_MODE,key, IvParameterSpec(iv))
+        }
+
 }
