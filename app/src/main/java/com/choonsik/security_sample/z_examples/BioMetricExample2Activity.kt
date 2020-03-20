@@ -1,6 +1,7 @@
 package com.choonsik.security_sample.z_examples
 
 import android.os.Bundle
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import com.choonsik.security_sample.R
@@ -10,8 +11,8 @@ import javax.crypto.Cipher
 
 class BioMetricExample2Activity : AppCompatActivity() {
 
-    var encryptedData = byteArrayOf()
-    var iv:ByteArray = byteArrayOf()
+    var encryptedData: String = ""
+    var iv: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +31,10 @@ class BioMetricExample2Activity : AppCompatActivity() {
         val cipher = KeystoreExample.getEncryptCipher(secretKey)
         encryptWithBioMetricPrompt(cipher, PLAIN_TEXT.toByteArray(), {
             //TODO 실패
-        }, {iv, resultByte->
+        }, { iv, result ->
             this.iv = iv
-            this.encryptedData = resultByte
-            val result = String(resultByte)
-            runOnUiThread{
+            this.encryptedData = result
+            runOnUiThread {
                 tv_result.text = "Result : $result"
             }
         })
@@ -44,7 +44,7 @@ class BioMetricExample2Activity : AppCompatActivity() {
         cipher: Cipher,
         data: ByteArray,
         failedAction: () -> Unit,
-        successAction: (ByteArray, ByteArray) -> Unit
+        successAction: (String, String) -> Unit
     ) {
         val executor = Executors.newSingleThreadExecutor()
         val biometricPrompt =
@@ -54,7 +54,10 @@ class BioMetricExample2Activity : AppCompatActivity() {
                     result.cryptoObject?.cipher?.let { resultCipher ->
                         val iv = resultCipher.iv
                         val encryptedData = resultCipher.doFinal(data)
-                        successAction(iv, encryptedData)
+                        successAction(
+                            encodingWithBase64ToString(iv),
+                            encodingWithBase64ToString(encryptedData)
+                        )
                     }
                 }
 
@@ -70,14 +73,13 @@ class BioMetricExample2Activity : AppCompatActivity() {
 
     private fun decryptWithBioMetric() {
         val secretKey = KeystoreExample.getKey(TEST_KEY_ALIAS)
-        val cipher = KeystoreExample.getDecryptCipher(secretKey,iv)
+        val cipher = KeystoreExample.getDecryptCipher(secretKey, decodingWithBase64ToByteArray(iv))
         if (encryptedData.isEmpty()) return
-        decryptWithBioMetricPrompt(cipher, encryptedData,  {
+        decryptWithBioMetricPrompt(cipher, decodingWithBase64ToByteArray(encryptedData), {
             //TODO 실패
         }, {
-            val result = String(it)
-            runOnUiThread{
-                tv_result.text = "Result : $result"
+            runOnUiThread {
+                tv_result.text = "Result : $it"
             }
         })
     }
@@ -86,7 +88,7 @@ class BioMetricExample2Activity : AppCompatActivity() {
         cipher: Cipher,
         encryptedData: ByteArray,
         failedAction: () -> Unit,
-        successAction: (ByteArray) -> Unit
+        successAction: (String) -> Unit
     ) {
         val executor = Executors.newSingleThreadExecutor()
         val biometricPrompt =
@@ -95,7 +97,7 @@ class BioMetricExample2Activity : AppCompatActivity() {
                     super.onAuthenticationSucceeded(result)
                     result.cryptoObject?.cipher?.let { resultCipher ->
                         val decryptedData = resultCipher.doFinal(encryptedData)
-                        successAction(decryptedData)
+                        successAction(String(decryptedData))
                     }
                 }
 
@@ -108,6 +110,7 @@ class BioMetricExample2Activity : AppCompatActivity() {
         val promptInfo = biometricPromptInfo()
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
     }
+
     private fun biometricPromptInfo(): BiometricPrompt.PromptInfo {
         return BiometricPrompt.PromptInfo.Builder()
             .setTitle("Title")
@@ -115,6 +118,14 @@ class BioMetricExample2Activity : AppCompatActivity() {
             .setDescription("Description")
             .setNegativeButtonText("Cancel")
             .build()
+    }
+
+    private fun encodingWithBase64ToString(byteArray: ByteArray): String {
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    private fun decodingWithBase64ToByteArray(encodingData :String): ByteArray{
+        return Base64.decode(encodingData, Base64.DEFAULT)
     }
 
     companion object {
