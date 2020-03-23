@@ -57,7 +57,7 @@ object KeystoreExample {
                 )
                 .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .setUserAuthenticationRequired(true) // ?????????
+//                .setUserAuthenticationRequired(true) // 디바이스에 사용자 인증이 됐을 때 사용 (ex 사용자의 디바이스 지문인증을 해제했을때 다시 사용 못하게 됨 , 일반적으로 지문인식 없이 사용할 경우 사용가능
                 //setUserAuthenticationValidityDurationSeconds() // password 인증인 경우에는 특정 초 만 키를 이용할 수 있다는 것을 의미하며, 만약 “-1” 로 전달할 경우, 키에 접근 할때마다 지문 인증이 필요하다는 것
                 //setInvalidatedByBiometricEnrollment() // 생체인증 정보가 변경될경우 키가 무효화 된다는 내용같은데 기본값은 TRUE임
                 //setUserAuthenticationValidWhileOnBody(boolean remainsValid) //이는 장치가 더 이상 사람에게 있지 않음을 감지하면 키를 자동으로 잠그는 역할을 하게 됩니다.
