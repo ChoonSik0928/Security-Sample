@@ -48,7 +48,6 @@ import javax.crypto.SecretKey
  *     </tr>
  *   </tbody>
  * </table>
- *
  */
 object KeyStoreWrapper {
 
@@ -65,11 +64,22 @@ object KeyStoreWrapper {
         load(null)
     }
 
+    fun createKey(
+        alias: String,
+        userAuthenticationRequired: Boolean = false,
+        invalidatedByBiometricEnrollment: Boolean = true,
+        durationSeconds: Int = -1,
+        userAuthenticationValidWhileOnBody: Boolean = true
+    ) {
+        // 패스워드는 키를 생성시 접근을 위한 password 인데 어떤 형태로 활용 방법을 고민
+        keyStore.getKey(alias, null)
+    }
+
     /**
      *  @param userAuthenticationRequired 사용자 인증 여부(ex 화면 잠금 기능 없이 사용 불가능)
      *  @param invalidatedByBiometricEnrollment 사용자 인증 정보가 추가되면 key 무효
      */
-    private fun createKey(
+    private fun generateKey(
         alias: String,
         userAuthenticationRequired: Boolean = false,
         invalidatedByBiometricEnrollment: Boolean = true,
@@ -94,7 +104,7 @@ object KeyStoreWrapper {
         return keyGenerator.generateKey()
     }
 
-    fun getAlias(): Enumeration<String>? {
-        return keyStore.aliases()
-    }
+//    fun getAlias(): Enumeration<String>? {
+//        return keyStore.aliases()
+//    }
 }
