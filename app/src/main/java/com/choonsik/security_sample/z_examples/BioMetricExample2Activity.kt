@@ -2,9 +2,11 @@ package com.choonsik.security_sample.z_examples
 
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import com.choonsik.security_sample.R
+import com.choonsik.security_sample.util.crypt.CryptManager
 import kotlinx.android.synthetic.main.activity_bio_metric_exmaple.*
 import java.util.concurrent.Executors
 import javax.crypto.Cipher
@@ -24,6 +26,10 @@ class BioMetricExample2Activity : AppCompatActivity() {
         btn_decrypt.setOnClickListener {
             decryptWithBioMetric()
         }
+
+        val test = CryptManager.encryptPlainText("PIN", "abc")
+        Log.e("test","value = ${test}")
+        Log.e("tets","data = decrytedValue ${CryptManager.decryptPlainText("PIN",test)}")
     }
 
     private fun encryptWithBioMetric() {
@@ -124,7 +130,7 @@ class BioMetricExample2Activity : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
-    private fun decodingWithBase64ToByteArray(encodingData :String): ByteArray{
+    private fun decodingWithBase64ToByteArray(encodingData: String): ByteArray {
         return Base64.decode(encodingData, Base64.DEFAULT)
     }
 

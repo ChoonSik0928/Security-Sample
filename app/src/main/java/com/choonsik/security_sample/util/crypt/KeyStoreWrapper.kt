@@ -3,6 +3,9 @@ package com.choonsik.security_sample.util.crypt
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
+import java.lang.Exception
+import java.security.Key
 import java.security.KeyStore
 import java.util.*
 import javax.crypto.KeyGenerator
@@ -64,15 +67,27 @@ object KeyStoreWrapper {
         load(null)
     }
 
+    fun getKey(alias: String) : SecretKey{
+        return keyStore.getKey(alias, null) as SecretKey
+    }
+
     fun createKey(
         alias: String,
         userAuthenticationRequired: Boolean = false,
         invalidatedByBiometricEnrollment: Boolean = true,
         durationSeconds: Int = -1,
         userAuthenticationValidWhileOnBody: Boolean = true
-    ) {
+    ): Key? {
+        generateKey(
+            alias,
+            userAuthenticationRequired,
+            invalidatedByBiometricEnrollment,
+            durationSeconds,
+            userAuthenticationValidWhileOnBody
+        )
+
         // 패스워드는 키를 생성시 접근을 위한 password 인데 어떤 형태로 활용 방법을 고민
-        keyStore.getKey(alias, null)
+        return getKey(alias)
     }
 
     /**
