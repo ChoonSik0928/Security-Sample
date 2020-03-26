@@ -2,11 +2,19 @@ package com.choonsik.security_sample.di.module
 
 import com.choonsik.security_sample.di.annotation.ActivityScoped
 import com.choonsik.security_sample.ui.MainActivity
+import com.choonsik.security_sample.ui.sample_list.SampleListModule
+import com.choonsik.security_sample.ui.simple_crypt.SimpleCryptModule
 import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
-//TODO UI Module 추가
 @Module
 abstract class ActivityBindingModule {
     @ActivityScoped
-    internal abstract fun getMainActivity() : MainActivity
+    @ContributesAndroidInjector(
+        modules = [
+            SampleListModule::class,
+            SimpleCryptModule::class
+        ]
+    )
+    internal abstract fun getMainActivity(): MainActivity
 }

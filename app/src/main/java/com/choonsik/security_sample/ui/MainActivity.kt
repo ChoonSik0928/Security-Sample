@@ -3,35 +3,26 @@ package com.choonsik.security_sample.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import com.choonsik.security_sample.R
+import com.choonsik.security_sample.databinding.ActivityMainBinding
+import com.choonsik.security_sample.extension.assistedActivityViewModels
 import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val mainViewModel by assistedActivityViewModels<MainActivityViewModel> { viewModelFactory }
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        var result = arrayListOf<String>()
-        pin_keyboard.setKeyboardClickListener(object : KeyboardClickListener {
-            override fun onKeyClick(key: PinKey) {
-
-                when (key) {
-                    is PinKey.BackKey -> {
-                        if(result.isNotEmpty()){
-                            result.removeAt(result.lastIndex)
-                        }
-                    }
-
-                    is PinKey.Alphabet,
-                    is PinKey.Num -> {
-                        result.add(PinKey.getString(key))
-                    }
-                }
-
-                tv_result.text = result.toString()
-            }
-        })
+        setContentView(binding.root)
     }
 }

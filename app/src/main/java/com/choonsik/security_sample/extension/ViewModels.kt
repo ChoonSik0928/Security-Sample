@@ -1,5 +1,7 @@
-package com.choonsik.security_sample.ext
+package com.choonsik.security_sample.extension
 
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.ViewModel
@@ -11,4 +13,10 @@ inline fun <VM : ViewModel> Fragment.assistedViewModels(
     crossinline body: () -> ViewModelProvider.Factory
 ): Lazy<VM> {
     return createViewModelLazy(viewModelClass, { viewModelStore }) { body() }
+}
+
+inline fun <reified T : ViewModel> ComponentActivity.assistedActivityViewModels(
+    crossinline body: () -> ViewModelProvider.Factory
+): Lazy<T> {
+    return viewModels { body() }
 }

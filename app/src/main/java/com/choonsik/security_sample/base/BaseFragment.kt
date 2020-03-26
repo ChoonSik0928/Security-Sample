@@ -9,8 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.choonsik.security_sample.BR
-import com.choonsik.security_sample.ext.assistedViewModels
+import com.choonsik.security_sample.extension.assistedViewModels
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 import kotlin.reflect.KClass

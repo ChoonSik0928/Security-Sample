@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/SampleList">
+
+    <fragment
+        android:id="@+id/SampleList"
+        android:name="com.choonsik.security_sample.ui.sample_list.SampleListFragment"
+        android:label="SampleListFragment"
+        tools:layout="@layout/fragment_sample_list">
+        <action
+            android:id="@+id/actionSimpleCrypt"
+            app:destination="@id/SimpleCrypt"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+<!--            <argument-->
+<!--                android:name="sessionId"-->
+<!--                app:argType="string"-->
+<!--                app:nullable="false" />-->
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SimpleCrypt"
+        android:name="com.choonsik.security_sample.ui.simple_crypt.SimpleCryptFragment"
+        android:label="SimpleCrypt"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim">
+
+    </fragment>
+
+
+
+</navigation>
