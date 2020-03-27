@@ -4,8 +4,9 @@ buildscript {
     apply from: 'dependency.gradle'
     addRepos(repositories)
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath gradlePlugin.android
         classpath gradlePlugin.kotlin
+        classpath gradlePlugin.navigation_safe_args
     }
 }
 

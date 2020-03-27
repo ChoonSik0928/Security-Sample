@@ -2,7 +2,7 @@ ext.deps = [:]
 
 // version
 def versions = [:]
-versions.kotlin = "1.3.61"
+versions.kotlin = "1.3.71"
 versions.dagger = "2.25.4"
 versions.coroutine = "1.3.3"
 versions.lifecycle = "2.2.0"
@@ -62,8 +62,9 @@ ext.deps = deps
 
 // build gradle plugin
 def gradlePlugin = [
-        android      : "com.android.tools.build:gradle:3.5.3",
+        android      : "com.android.tools.build:gradle:3.6.1",
         kotlin       : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+        navigation_safe_args: "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
 ]
 ext.gradlePlugin = gradlePlugin
 

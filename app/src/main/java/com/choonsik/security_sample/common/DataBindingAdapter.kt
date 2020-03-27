@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 abstract class DataBindingAdapter<T>(diffCallback: DiffUtil.ItemCallback<T>) :
     ListAdapter<T, DataBindingViewHolder<T>>(diffCallback) {
 
-    interface ItemClickListener {
-        fun onClickItem(sessionId: String)
+    interface ItemClickListener<in T> {
+        fun onClickItem(item: T)
     }
 
-    abstract var itemClickListener: ItemClickListener?
+    abstract var itemClickListener: ItemClickListener<T>?
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<T> {
         val layoutInflater = LayoutInflater.from(parent.context)
