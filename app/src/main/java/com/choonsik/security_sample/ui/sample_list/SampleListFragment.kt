@@ -30,7 +30,6 @@ class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListB
             itemClickListener = object : DataBindingAdapter.ItemClickListener<UISampleModel> {
 
                 override fun onClickItem(item: UISampleModel) {
-                    Log.e("test","click = ${item}")
                     viewModel.onClickItem(item)
                 }
             }

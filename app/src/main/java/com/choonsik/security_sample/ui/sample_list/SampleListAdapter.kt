@@ -18,7 +18,6 @@ class SampleListAdapter : DataBindingAdapter<UISampleModel>(DiffCallback()) {
     override fun onBindViewHolder(holder: DataBindingViewHolder<UISampleModel>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.itemView.setOnClickListener {
-            Log.e("test","click")
             itemClickListener?.onClickItem(getItem(position))
         }
     }
