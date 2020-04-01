@@ -10,6 +10,7 @@ import com.choonsik.security_sample.base.BaseFragment
 import com.choonsik.security_sample.common.DataBindingAdapter
 import com.choonsik.security_sample.databinding.FragmentSampleListBinding
 import com.choonsik.security_sample.ui.model.UISampleModel
+import com.choonsik.security_sample.ui.pin.PinFragment
 
 class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListBinding>(
     R.layout.fragment_sample_list,
@@ -43,8 +44,15 @@ class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListB
     private fun initObserve() {
         viewModel.itemEvent.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let {
-                //TODO Position 에 따라 direction 설정
-                val direction = SampleListFragmentDirections.actionSimpleCrypt()
+
+                val direction = if (it.position == 0) {
+                    SampleListFragmentDirections.actionSimpleCrypt()
+                } else if (it.position == 1) {
+                    SampleListFragmentDirections.actionPin()
+                } else {
+                    SampleListFragmentDirections.actionSimpleCrypt()
+                }
+
                 binding.root.findNavController().navigate(direction)
             }
         })
