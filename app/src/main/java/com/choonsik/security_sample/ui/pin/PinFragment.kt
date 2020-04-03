@@ -15,6 +15,9 @@ class PinFragment : BaseFragment<PinViewModel, FragmentPinBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.initValue()
+
         pin_keyboard.setKeyboardClickListener(object :KeyboardClickListener{
             override fun onKeyClick(key: PinKey) {
                 viewModel.onKeyClick(key)
