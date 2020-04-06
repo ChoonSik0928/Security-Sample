@@ -23,24 +23,5 @@ class PinFragment : BaseFragment<PinViewModel, FragmentPinBinding>(
                 viewModel.onKeyClick(key)
             }
         })
-//        var result = arrayListOf<String>()
-//        pin_keyboard.setKeyboardClickListener(object : KeyboardClickListener {
-//            override fun onKeyClick(key: PinKey) {
-//
-//                when (key) {
-//                    is PinKey.BackKey -> {
-//                        if(result.isNotEmpty()){
-//                            result.removeAt(result.lastIndex)
-//                        }
-//                    }
-//
-//                    is PinKey.Num -> {
-//                        result.add(PinKey.getString(key))
-//                    }
-//                }
-//
-//                tv_result.text = result.toString()
-//            }
-//        })
     }
 }

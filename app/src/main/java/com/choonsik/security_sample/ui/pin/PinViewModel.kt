@@ -3,6 +3,7 @@ package com.choonsik.security_sample.ui.pin
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.choonsik.security_sample.util.crypt.CryptManager
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
 import javax.inject.Inject
 
@@ -11,6 +12,8 @@ class PinViewModel @Inject constructor() : ViewModel() {
     val registrationKey = MutableLiveData<String>()
     val inputKey = MutableLiveData<String>()
     val description = MutableLiveData<String>()
+    var encryptedValue = ""
+
     var isFinished = false
     private val _registrationKeys = arrayListOf<PinKey>()
     private val _inputKeys = arrayListOf<PinKey>()
@@ -57,25 +60,24 @@ class PinViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun isEqualsKey(): Boolean {
-        var isEquals = true
-        _inputKeys.forEachIndexed { index, pinKey ->
-            if (!PinKey.getString(_registrationKeys[index])
-                    .equals(PinKey.getString(pinKey))
-            ) {
-                isEquals = false
-                return@forEachIndexed
-            }
-        }
-        return isEquals
+        return decryptedValue() == pinKeysToPlainText(_inputKeys)
+//        var isEquals = true
+//        _inputKeys.forEachIndexed { index, pinKey ->
+//            if (PinKey.getString(_registrationKeys[index]) != PinKey.getString(pinKey)) {
+//                isEquals = false
+//                return@forEachIndexed
+//            }
+//        }
+//        return isEquals
     }
 
     private fun displayText() {
         var displayText = "[ "
         for (index in 0 until PIN_MAX_SIZE) {
-            if (_inputKeys.getOrNull(index) != null) {
-                displayText += " ${PinKey.getString(_inputKeys[index])} "
+            displayText += if (_inputKeys.getOrNull(index) != null) {
+                " ${PinKey.getString(_inputKeys[index])} "
             } else {
-                displayText += " - "
+                " - "
             }
         }
         displayText += " ]"
@@ -89,7 +91,8 @@ class PinViewModel @Inject constructor() : ViewModel() {
         }
         displayText += " ]"
 
-        registrationKey.value = displayText
+        encryptedValue = encryptedValue(_registrationKeys)
+        registrationKey.value = displayText + "\n-- pinKey encrypted Value --\n$encryptedValue"
     }
 
     private fun isRegistration(): Boolean {
@@ -102,7 +105,24 @@ class PinViewModel @Inject constructor() : ViewModel() {
         registrationDisplayText()
     }
 
+    private fun encryptedValue(keys: ArrayList<PinKey>): String {
+        return CryptManager.encryptPlainText(KEY_PIN, pinKeysToPlainText(keys))
+    }
+
+    private fun pinKeysToPlainText(keys: ArrayList<PinKey>): String{
+        val values = arrayListOf<String>()
+        keys.forEach {
+            values.add(PinKey.getString(it))
+        }
+        return values.toString()
+    }
+
+    private fun decryptedValue(): String {
+        return CryptManager.decryptPlainText(KEY_PIN, encryptedValue)
+    }
+
     companion object {
         private const val PIN_MAX_SIZE = 4
+        const val KEY_PIN = "KEY_PIN"
     }
 }
