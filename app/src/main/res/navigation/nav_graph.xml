@@ -31,6 +31,15 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
         </action>
+
+        <action
+            android:id="@+id/actionBiometric"
+            app:destination="@id/Biometric"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
     </fragment>
 
     <fragment
@@ -57,5 +66,16 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/Biometric"
+        android:name="com.choonsik.security_sample.ui.biometric.BiometricSampleFragment"
+        android:label="Biometric"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        tools:layout="@layout/fragment_biometric_sample">
+
+    </fragment>
 
 </navigation>

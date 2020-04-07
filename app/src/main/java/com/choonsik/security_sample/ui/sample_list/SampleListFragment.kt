@@ -45,12 +45,19 @@ class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListB
         viewModel.itemEvent.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let {
 
-                val direction = if (it.position == 0) {
-                    SampleListFragmentDirections.actionSimpleCrypt()
-                } else if (it.position == 1) {
-                    SampleListFragmentDirections.actionPin()
-                } else {
-                    SampleListFragmentDirections.actionSimpleCrypt()
+                val direction = when (it.position) {
+                    0 -> {
+                        SampleListFragmentDirections.actionSimpleCrypt()
+                    }
+                    1 -> {
+                        SampleListFragmentDirections.actionPin()
+                    }
+                    2 -> {
+                        SampleListFragmentDirections.actionBiometric()
+                    }
+                    else -> {
+                        SampleListFragmentDirections.actionSimpleCrypt()
+                    }
                 }
 
                 binding.root.findNavController().navigate(direction)

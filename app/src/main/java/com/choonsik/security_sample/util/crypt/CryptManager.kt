@@ -1,6 +1,7 @@
 package com.choonsik.security_sample.util.crypt
 
 import androidx.biometric.BiometricPrompt
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import java.util.concurrent.Executors
 
@@ -50,7 +51,7 @@ object CryptManager {
     }
 
     fun decryptWithBioMetric(
-        fragmentActivity: FragmentActivity,
+        fragment: Fragment,
         keyAlias: String,
         data: String,
         useInitializationVector: Boolean = true
@@ -64,7 +65,7 @@ object CryptManager {
         }
         val biometricPrompt =
             BiometricPrompt(
-                fragmentActivity,
+                fragment,
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
