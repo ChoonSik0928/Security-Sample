@@ -17,10 +17,12 @@ object CryptManager {
         return CipherWrapper.decrypt(data, key, useInitializationVector = true)
     }
 
-    private fun encryptWithBioMetric(
-        fragmentActivity: FragmentActivity,
+    fun encryptWithBioMetric(
+        fragment: Fragment,
         keyAlias: String,
         data: String,
+        success: (result: String) -> Unit,
+        error: (errorCode: Int, errorMessage: String) -> Unit,
         useInitializationVector: Boolean = true
     ) {
         val executor = Executors.newSingleThreadExecutor()
@@ -29,20 +31,20 @@ object CryptManager {
 
         val biometricPrompt =
             BiometricPrompt(
-                fragmentActivity,
+                fragment,
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
                         val cipher = result.cryptoObject?.cipher!!
-                        //TODO 인터페이스 추가
                         val encryptedData =
                             CipherWrapper.encrypt(data, cipher, useInitializationVector)
+                        success(encryptedData)
                     }
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
-                        //TODO 인터페이스 추가
+                        error(errorCode, errString.toString())
                     }
                 })
 
