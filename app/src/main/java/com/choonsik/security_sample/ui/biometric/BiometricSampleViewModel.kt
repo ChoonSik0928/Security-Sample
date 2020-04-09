@@ -6,15 +6,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.choonsik.security_sample.R
 import com.choonsik.security_sample.extension.call
 import com.choonsik.security_sample.util.crypt.CryptManager
 import kotlinx.android.synthetic.main.fragment_simple_crypt.view.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BiometricSampleViewModel @Inject constructor() : ViewModel() {
 
-    val plainText = MutableLiveData<String>()
+    val plainText = "암호화 할 value = $PLAIN_TEXT"
+    var encryptedValue = MutableLiveData<String>()
+    var decryptedValue = MutableLiveData<String>()
     val startEncrypt = MutableLiveData<Unit>()
     val startDecrypt = MutableLiveData<Unit>()
 
@@ -42,11 +46,32 @@ class BiometricSampleViewModel @Inject constructor() : ViewModel() {
             KEY_BIOMETRIC,
             PLAIN_TEXT,
             { result ->
-                Log.e("test","result = ${result}")
+                viewModelScope.launch {
+                    encryptedValue.value = result
+                }
+
             },
             { errorCode, errorMessage ->
-                Log.e("test","error = ${errorCode} / ${errorMessage}")
+                Log.e("test", "error = ${errorCode} / ${errorMessage}")
             })
+    }
+
+    fun showDecryptedBiometric(fragment: Fragment) {
+        if (encryptedValue.value.isNullOrEmpty()) return
+
+        CryptManager.decryptWithBioMetric(
+            fragment,
+            KEY_BIOMETRIC,
+            encryptedValue.value!!,
+            { result ->
+                viewModelScope.launch {
+                    decryptedValue.value = "복호화 = $result"
+                }
+            },
+            { errorCode, errorMessage ->
+                Log.e("test", "error = ${errorCode} / ${errorMessage}")
+            }
+        )
     }
 
     interface OnBiometricCallback {

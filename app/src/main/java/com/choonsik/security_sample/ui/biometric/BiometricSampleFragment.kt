@@ -24,7 +24,7 @@ class BiometricSampleFragment
             })
 
             decrypted().observe(viewLifecycleOwner, Observer {
-//                viewModel.showEncryptedBiometric(this@BiometricSampleFragment)
+                viewModel.showDecryptedBiometric(this@BiometricSampleFragment)
             })
         }
     }

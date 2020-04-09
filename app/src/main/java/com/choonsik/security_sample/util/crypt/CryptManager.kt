@@ -36,7 +36,6 @@ object CryptManager {
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
-                        val cipher = result.cryptoObject?.cipher!!
                         val encryptedData =
                             CipherWrapper.encrypt(data, cipher, useInitializationVector)
                         success(encryptedData)
@@ -56,15 +55,18 @@ object CryptManager {
         fragment: Fragment,
         keyAlias: String,
         data: String,
+        success: (result: String) -> Unit,
+        error: (errorCode: Int, errorMessage: String) -> Unit,
         useInitializationVector: Boolean = true
     ) {
         val executor = Executors.newSingleThreadExecutor()
         val key = KeyStoreWrapper.getKey(keyAlias)
-        var cipher = CipherWrapper.getDecryptCipher(key)
-        if (useInitializationVector) {
-            val iv = CipherWrapper.getIVSpec(data)
-            cipher = CipherWrapper.getDecryptCipher(key, iv)
+        var cipher = if (useInitializationVector) {
+            CipherWrapper.getDecryptCipher(key, CipherWrapper.getIVSpec(data))
+        } else {
+            CipherWrapper.getDecryptCipher(key)
         }
+
         val biometricPrompt =
             BiometricPrompt(
                 fragment,
@@ -72,14 +74,14 @@ object CryptManager {
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
-                        val cipher = result.cryptoObject?.cipher!!
-                        //TODO 인터페이스 추가
                         val decryptData =
                             CipherWrapper.decrypt(cipher, data, useInitializationVector)
+                        success(decryptData)
                     }
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
+                        error(errorCode, errString.toString())
                     }
                 })
 
