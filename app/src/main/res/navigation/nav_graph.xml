@@ -40,6 +40,16 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
         </action>
+
+
+        <action
+            android:id="@+id/actionBiometricWithPin"
+            app:destination="@id/BiometricWithPin"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
     </fragment>
 
     <fragment
@@ -75,6 +85,40 @@
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_biometric_sample">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/BiometricWithPin"
+        android:name="com.choonsik.security_sample.ui.biometric_with_pin.BiometricWithPinFragment"
+        android:label="BiometricWithPin"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        tools:layout="@layout/fragment_biometric_with_pin"
+        >
+        <action
+            android:id="@+id/actionRegistration"
+            app:destination="@id/Registration"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/Registration"
+        android:name="com.choonsik.security_sample.ui.biometric_with_pin.registration.RegistrationFragment"
+        android:label="Registration"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        tools:layout="@layout/fragment_registration"
+        >
 
     </fragment>
 

@@ -11,6 +11,7 @@ import com.choonsik.security_sample.common.DataBindingAdapter
 import com.choonsik.security_sample.databinding.FragmentSampleListBinding
 import com.choonsik.security_sample.ui.model.UISampleModel
 import com.choonsik.security_sample.ui.pin.PinFragment
+import java.lang.IllegalArgumentException
 
 class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListBinding>(
     R.layout.fragment_sample_list,
@@ -55,8 +56,11 @@ class SampleListFragment : BaseFragment<SampleListViewModel, FragmentSampleListB
                     2 -> {
                         SampleListFragmentDirections.actionBiometric()
                     }
+                    3 -> {
+                        SampleListFragmentDirections.actionBiometricWithPin()
+                    }
                     else -> {
-                        SampleListFragmentDirections.actionSimpleCrypt()
+                       throw IllegalArgumentException("not supported action")
                     }
                 }
 

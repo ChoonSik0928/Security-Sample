@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class MainActivityModule {
+abstract class  MainActivityModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
