@@ -3,6 +3,7 @@ package com.choonsik.security_sample.di
 import com.choonsik.security_sample.SecuritySampleApplication
 import com.choonsik.security_sample.di.module.ActivityBindingModule
 import com.choonsik.security_sample.di.module.AppModule
+import com.choonsik.security_sample.di.module.PreferenceModule
 import com.choonsik.security_sample.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -16,7 +17,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         AppModule::class,
         ActivityBindingModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        PreferenceModule::class
     ]
 )
 interface AppComponent : AndroidInjector<SecuritySampleApplication> {
