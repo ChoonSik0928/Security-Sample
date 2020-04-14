@@ -1,18 +1,18 @@
 package com.choonsik.security_sample.preference
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
-import javax.inject.Inject
-import javax.inject.Singleton
-
 interface PinPreference {
 
     fun useBiometric()
 
     fun savePinInfo(info: String)
 
-    fun getPinInfo()
+    fun getPinInfo() : String
 
     fun clearPin()
+
+    fun isRegistered() : Boolean
+
+    companion object {
+        const val ENCRYPTED_PIN_NUMBER = "ENCRYPTED_PIN_NUMBER"
+    }
 }
