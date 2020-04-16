@@ -61,14 +61,6 @@ class PinViewModel @Inject constructor() : ViewModel() {
 
     private fun isEqualsKey(): Boolean {
         return decryptedValue() == pinKeysToPlainText(_inputKeys)
-//        var isEquals = true
-//        _inputKeys.forEachIndexed { index, pinKey ->
-//            if (PinKey.getString(_registrationKeys[index]) != PinKey.getString(pinKey)) {
-//                isEquals = false
-//                return@forEachIndexed
-//            }
-//        }
-//        return isEquals
     }
 
     private fun displayText() {
