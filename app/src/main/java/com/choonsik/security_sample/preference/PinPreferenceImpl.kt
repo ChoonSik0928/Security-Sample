@@ -26,7 +26,9 @@ class PinPreferenceImpl
     }
 
     override fun isRegistered(): Boolean {
-        return !pref.getString(ENCRYPTED_PIN_NUMBER,"").isNullOrEmpty()
+        val value = pref.getString(ENCRYPTED_PIN_NUMBER, "")
+        Log.e("test", "value= ${value}")
+        return !value.isNullOrEmpty()
     }
 
 }

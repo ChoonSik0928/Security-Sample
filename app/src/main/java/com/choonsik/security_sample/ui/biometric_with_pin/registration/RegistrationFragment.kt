@@ -9,7 +9,6 @@ import com.choonsik.security_sample.base.BaseFragment
 import com.choonsik.security_sample.databinding.FragmentRegistrationBinding
 import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 
 class RegistrationFragment : BaseFragment<RegistrationViewModel, FragmentRegistrationBinding>

@@ -30,6 +30,12 @@ class BiometricWithPinFragment :
                 val direction = BiometricWithPinFragmentDirections.actionRegistration()
                 binding.root.findNavController().navigate(direction)
             })
+
+            actionValidation().observe(viewLifecycleOwner, Observer {
+                if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@Observer
+                val direction = BiometricWithPinFragmentDirections.actionValidation()
+                binding.root.findNavController().navigate(direction)
+            })
         }
     }
 }

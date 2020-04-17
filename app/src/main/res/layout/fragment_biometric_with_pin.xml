@@ -28,9 +28,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Registration"
+            android:text="핀 등록"
             android:onClick="@{vm::onClickButton}"
-            android:visibility="@{vm.pinStatus, default=gone}"
+            android:visibility="@{vm.isShowRegistration, default=gone}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_validation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="핀 확인"
+            android:onClick="@{vm::onClickButton}"
+            android:visibility="@{vm.isShowValidation, default=gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
