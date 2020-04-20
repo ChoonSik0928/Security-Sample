@@ -1,5 +1,6 @@
 package com.choonsik.security_sample.ui.biometric_with_pin.registration
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.choonsik.security_sample.extension.call
@@ -97,6 +98,7 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun encryptedValue(keys: ArrayList<PinKey>): String {
+        Log.e("test"," encryptedValue = ${pinKeysToPlainText(keys)}")
         return CryptManager.encryptPlainText(PinViewModel.KEY_PIN, pinKeysToPlainText(keys))
     }
 
