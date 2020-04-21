@@ -1,14 +1,15 @@
 package com.choonsik.security_sample.ui.biometric_with_pin.validation
 
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.choonsik.security_sample.extension.call
 import com.choonsik.security_sample.preference.PinPreference
-import com.choonsik.security_sample.ui.biometric_with_pin.registration.RegistrationViewModel
-import com.choonsik.security_sample.ui.pin.PinViewModel
 import com.choonsik.security_sample.util.crypt.CryptManager
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ValidationViewModel @Inject constructor(
@@ -36,10 +37,6 @@ class ValidationViewModel @Inject constructor(
                 _inputKeys.add(key)
                 Log.e("test", "keys =${pinKeysToPlainText(_inputKeys)}")
                 if (isLastInput()) {
-                    Log.e(
-                        "test", "getPinInfo =  ${pinPreference.getPinInfo()} / " +
-                                "${decryptedValue(pinPreference.getPinInfo())} /"
-                    )
                     if (isEqualsEncryptedValue(_inputKeys)) {
                         description.value = "핀코드가 일치합니다"
                         successValidation.call()
@@ -51,6 +48,21 @@ class ValidationViewModel @Inject constructor(
                 displayInputPinCode()
             }
         }
+    }
+
+    fun setBiometric(fragment: Fragment){
+        CryptManager.encryptWithBioMetric(
+            fragment,
+            KEY_PIN_BIOMETRIC,
+            pinPreference.getPinInfo(),
+            { result ->
+                viewModelScope.launch {
+                    pinPreference.enrolBiometric(result)
+                }
+            },
+            { errorCode, errorMessage ->
+                Log.e("test", "error = ${errorCode} / ${errorMessage}")
+            })
     }
 
     private fun isLastInput() = _inputKeys.size == PIN_MAX_SIZE
@@ -87,6 +99,7 @@ class ValidationViewModel @Inject constructor(
     companion object {
         private const val PIN_MAX_SIZE = 4
         const val KEY_PIN = "KEY_PIN"
+        const val KEY_PIN_BIOMETRIC = "KEY_PIN_BIOMETRIC"
     }
 
 }

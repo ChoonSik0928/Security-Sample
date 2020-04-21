@@ -98,7 +98,6 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun encryptedValue(keys: ArrayList<PinKey>): String {
-        Log.e("test"," encryptedValue = ${pinKeysToPlainText(keys)}")
         return CryptManager.encryptPlainText(PinViewModel.KEY_PIN, pinKeysToPlainText(keys))
     }
 
