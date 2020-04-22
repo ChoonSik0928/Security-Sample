@@ -1,6 +1,7 @@
-package com.choonsik.security_sample.ui.biometric_with_pin.validation
+package com.choonsik.security_sample.ui.biometric_with_pin.validation_pin
 
 import android.util.Log
+import androidx.biometric.BiometricConstants
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,12 +13,14 @@ import com.choonsik.security_sample.widget.pin.keyboard.PinKey
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ValidationViewModel @Inject constructor(
+class ValidationPinViewModel @Inject constructor(
     private val pinPreference: PinPreference
 ) : ViewModel() {
     val description = MutableLiveData<String>()
     val inputKey = MutableLiveData<String>()
     val successValidation = MutableLiveData<Unit>()
+    val skipEnrolledBiometric = MutableLiveData<Unit>()
+    val enrolledBiometric =  MutableLiveData<Unit>()
 
     private val _inputKeys = arrayListOf<PinKey>()
 
@@ -58,10 +61,17 @@ class ValidationViewModel @Inject constructor(
             { result ->
                 viewModelScope.launch {
                     pinPreference.enrolBiometric(result)
+                    enrolledBiometric.call()
                 }
             },
             { errorCode, errorMessage ->
                 Log.e("test", "error = ${errorCode} / ${errorMessage}")
+                when(errorCode){
+                    BiometricConstants.ERROR_USER_CANCELED,
+                    BiometricConstants.ERROR_NEGATIVE_BUTTON->{
+                        skipEnrolledBiometric.call()
+                    }
+                }
             })
     }
 

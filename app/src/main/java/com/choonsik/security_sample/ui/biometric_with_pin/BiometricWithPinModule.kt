@@ -5,8 +5,10 @@ import com.choonsik.security_sample.di.annotation.FragmentScoped
 import com.choonsik.security_sample.di.annotation.ViewModelKey
 import com.choonsik.security_sample.ui.biometric_with_pin.registration.RegistrationFragment
 import com.choonsik.security_sample.ui.biometric_with_pin.registration.RegistrationViewModel
-import com.choonsik.security_sample.ui.biometric_with_pin.validation.ValidationFragment
-import com.choonsik.security_sample.ui.biometric_with_pin.validation.ValidationViewModel
+import com.choonsik.security_sample.ui.biometric_with_pin.validation_biometric.ValidationBiometricFragment
+import com.choonsik.security_sample.ui.biometric_with_pin.validation_biometric.ValidationBiometricViewModel
+import com.choonsik.security_sample.ui.biometric_with_pin.validation_pin.ValidationPinFragment
+import com.choonsik.security_sample.ui.biometric_with_pin.validation_pin.ValidationPinViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -21,16 +23,16 @@ internal abstract class BiometricWithPinModule {
     @Binds
     @IntoMap
     @ViewModelKey(BiometricWithPinViewModel::class)
-    abstract fun bindFragmentBiometricWithPinViewModel(viewModel: BiometricWithPinViewModel): ViewModel
+    abstract fun bindBiometricWithPinViewModel(viewModel: BiometricWithPinViewModel): ViewModel
 
     @FragmentScoped
     @ContributesAndroidInjector
-    internal abstract fun contributeValidationFragment() : ValidationFragment
+    internal abstract fun contributeValidationFragment() : ValidationPinFragment
 
     @Binds
     @IntoMap
-    @ViewModelKey(ValidationViewModel::class)
-    abstract fun bindFragmentValidationViewModel(viewModel: ValidationViewModel): ViewModel
+    @ViewModelKey(ValidationPinViewModel::class)
+    abstract fun bindValidationViewModel(viewModel: ValidationPinViewModel): ViewModel
 
     @FragmentScoped
     @ContributesAndroidInjector
@@ -39,5 +41,14 @@ internal abstract class BiometricWithPinModule {
     @Binds
     @IntoMap
     @ViewModelKey(RegistrationViewModel::class)
-    abstract fun bindsFragmentRegistrationViewModel(viewModel: RegistrationViewModel) : ViewModel
+    abstract fun bindRegistrationViewModel(viewModel: RegistrationViewModel) : ViewModel
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract fun contributeValidationBiometricFragment() : ValidationBiometricFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RegistrationViewModel::class)
+    abstract fun bindValidationBiometricViewModel(viewModel: ValidationBiometricViewModel) : ViewModel
 }

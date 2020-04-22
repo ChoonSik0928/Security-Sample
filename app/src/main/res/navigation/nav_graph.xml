@@ -109,12 +109,19 @@
 
         <action
             android:id="@+id/actionValidation"
-            app:destination="@id/Validation"
+            app:destination="@id/ValidationPin"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
         </action>
+        <action
+            android:id="@+id/action_BiometricWithPin_to_ValidationBioMetric"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:destination="@id/ValidationBioMetric" />
     </fragment>
 
 
@@ -134,14 +141,28 @@
 
 
     <fragment
-        android:id="@+id/Validation"
-        android:name="com.choonsik.security_sample.ui.biometric_with_pin.validation.ValidationFragment"
-        android:label="Validation"
+        android:id="@+id/ValidationPin"
+        android:name="com.choonsik.security_sample.ui.biometric_with_pin.validation_pin.ValidationPinFragment"
+        android:label="ValidationPin"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_validation"
+        >
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ValidationBioMetric"
+        android:name="com.choonsik.security_sample.ui.biometric_with_pin.validation_biometric.ValidationBiometricFragment"
+        android:label="Validation"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        tools:layout="@layout/fragment_validation_biometric"
         >
 
     </fragment>

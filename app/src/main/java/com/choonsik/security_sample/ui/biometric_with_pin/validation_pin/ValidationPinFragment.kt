@@ -1,4 +1,4 @@
-package com.choonsik.security_sample.ui.biometric_with_pin.validation
+package com.choonsik.security_sample.ui.biometric_with_pin.validation_pin
 
 import android.os.Bundle
 import android.view.View
@@ -12,9 +12,9 @@ import com.choonsik.security_sample.widget.pin.`interface`.KeyboardClickListener
 import com.choonsik.security_sample.widget.pin.keyboard.PinKey
 import kotlinx.android.synthetic.main.fragment_validation.*
 
-class ValidationFragment : BaseFragment<ValidationViewModel, FragmentValidationBinding>(
+class ValidationPinFragment : BaseFragment<ValidationPinViewModel, FragmentValidationBinding>(
     R.layout.fragment_validation,
-    ValidationViewModel::class
+    ValidationPinViewModel::class
 ) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,13 +31,25 @@ class ValidationFragment : BaseFragment<ValidationViewModel, FragmentValidationB
             AlertDialog.Builder(context!!)
                 .setMessage("핀코드 대신 생체인증을 사용하시겠습니까?")
                 .setPositiveButton("예") { dialog, _ ->
-                    viewModel.setBiometric(this@ValidationFragment)
+                    viewModel.setBiometric(this@ValidationPinFragment)
                     dialog.dismiss()
                 }.setNegativeButton("아니오") { dialog, _ ->
-                    this@ValidationFragment.findNavController().popBackStack()
+                    popBackStack()
                     dialog.dismiss()
                 }
                 .show()
         })
+
+        viewModel.skipEnrolledBiometric.observe(viewLifecycleOwner, Observer {
+            popBackStack()
+        })
+
+        viewModel.successValidation.observe(viewLifecycleOwner, Observer {
+            popBackStack()
+        })
+    }
+
+    private fun popBackStack(){
+        this@ValidationPinFragment.findNavController().popBackStack()
     }
 }

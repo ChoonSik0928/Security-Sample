@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.choonsik.security_sample.ui.biometric_with_pin.validation.ValidationViewModel" />
+            type="com.choonsik.security_sample.ui.biometric_with_pin.validation_pin.ValidationPinViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
