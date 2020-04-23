@@ -1,8 +1,10 @@
 package com.choonsik.security_sample.ui.biometric_with_pin.validation_pin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.choonsik.security_sample.R
@@ -28,6 +30,8 @@ class ValidationPinFragment : BaseFragment<ValidationPinViewModel, FragmentValid
         })
 
         viewModel.successValidation.observe(viewLifecycleOwner, Observer {
+            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@Observer
+
             AlertDialog.Builder(context!!)
                 .setMessage("핀코드 대신 생체인증을 사용하시겠습니까?")
                 .setPositiveButton("예") { dialog, _ ->
@@ -41,10 +45,11 @@ class ValidationPinFragment : BaseFragment<ValidationPinViewModel, FragmentValid
         })
 
         viewModel.skipEnrolledBiometric.observe(viewLifecycleOwner, Observer {
+            Log.e("test","1")
             popBackStack()
         })
 
-        viewModel.successValidation.observe(viewLifecycleOwner, Observer {
+        viewModel.enrolledBiometric.observe(viewLifecycleOwner, Observer {
             popBackStack()
         })
     }

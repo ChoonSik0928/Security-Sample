@@ -19,17 +19,24 @@ class BiometricWithPinViewModel @Inject constructor(
     private val _pinStatus = MutableLiveData<Int>()
 
     private val actionValidation = MutableLiveData<Unit>()
-    private var actionRegistration = MutableLiveData<Unit>()
+    private val actionRegistration = MutableLiveData<Unit>()
+    private val actionValidationBiometric = MutableLiveData<Unit>()
 
     val onClickNav = object : OnClickNav {
         override fun actionRegistration() = actionRegistration
         override fun actionValidation() = actionValidation
+        override fun actionValidationBiometric() = actionValidationBiometric
     }
 
     fun checkStatus() {
         if (pinPreference.isRegistered()) {
+            if (pinPreference.isEnrolledBiometric()) {
+                _pinStatus.value = 2
+            }else{
+                _pinStatus.value = 1
+            }
+            Log.e("test","status = ${_pinStatus.value}")
             pinStatusMessage.value = "등록된 PIN 확인"
-            _pinStatus.value = 1
         } else {
             pinStatusMessage.value = "PIN 등록하기"
             _pinStatus.value = 0
@@ -42,8 +49,13 @@ class BiometricWithPinViewModel @Inject constructor(
                 actionRegistration.call()
             }
 
-            R.id.btn_validation ->{
-                actionValidation.call()
+            R.id.btn_validation -> {
+                Log.e("test","status = ${_pinStatus.value}")
+                if (_pinStatus.value == 2) {
+                    actionValidationBiometric.call()
+                } else {
+                    actionValidation.call()
+                }
             }
         }
     }
@@ -55,17 +67,17 @@ class BiometricWithPinViewModel @Inject constructor(
         }
     }
 
-    fun isShowValidation(): Int{
+    fun isShowValidation(): Int {
         return when (_pinStatus.value) {
-            1 -> View.VISIBLE
+            1, 2 -> View.VISIBLE
             else -> View.GONE
         }
     }
 
 
-
     interface OnClickNav {
         fun actionRegistration(): LiveData<Unit>
         fun actionValidation(): LiveData<Unit>
+        fun actionValidationBiometric(): LiveData<Unit>
     }
 }

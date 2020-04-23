@@ -49,6 +49,6 @@ internal abstract class BiometricWithPinModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(RegistrationViewModel::class)
+    @ViewModelKey(ValidationBiometricViewModel::class)
     abstract fun bindValidationBiometricViewModel(viewModel: ValidationBiometricViewModel) : ViewModel
 }

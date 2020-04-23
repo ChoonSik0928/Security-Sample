@@ -11,6 +11,7 @@ class PinPreferenceImpl
 @Inject constructor(private val pref: SharedPreferences) : PinPreference {
 
     override fun enrolBiometric(info: String) {
+        Log.e("Test","info = ${info}")
         pref.edit().putString(ENCRYPTED_PIN_NUMBER_WITH_BIOMETRIC, info).apply()
     }
 
@@ -20,6 +21,10 @@ class PinPreferenceImpl
 
     override fun getPinInfo(): String {
         return pref.getString(ENCRYPTED_PIN_NUMBER, "")!!
+    }
+
+    override fun getBiometricInfo(): String {
+        return pref.getString(ENCRYPTED_PIN_NUMBER_WITH_BIOMETRIC,"")!!
     }
 
     override fun clearPin() {
@@ -33,6 +38,7 @@ class PinPreferenceImpl
 
     override fun isEnrolledBiometric(): Boolean{
         val value = pref.getString(ENCRYPTED_PIN_NUMBER_WITH_BIOMETRIC, "")
+        Log.e("test","value $value")
         return !value.isNullOrEmpty()
     }
 }

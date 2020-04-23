@@ -8,6 +8,8 @@ interface PinPreference {
 
     fun getPinInfo() : String
 
+    fun getBiometricInfo(): String
+
     fun clearPin()
 
     fun isRegistered() : Boolean
